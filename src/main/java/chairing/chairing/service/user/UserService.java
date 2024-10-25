@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import chairing.chairing.domain.user.User;
+import chairing.chairing.domain.user.UserRole;
 import chairing.chairing.dto.user.LoginRequest;
 import chairing.chairing.dto.user.UserCreateRequest;
+import chairing.chairing.repository.rental.RentalRepository;
 import chairing.chairing.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final RentalRepository rentalRepository;
 
     @Transactional
     public User getCurrentUser(Long userId) {
@@ -42,6 +45,10 @@ public class UserService {
             request.getRole(),
             request.getGuardianCode()
         );
+
+        if (user.getRole()==UserRole.GUARDIAN && rentalRepository.countByRentalCode(user.getGuardianCode()) < 1) {
+            throw new IllegalArgumentException("해당 대여 코드를 찾을 수 없습니다.");
+        }
 
         this.userRepository.save(user);
         return user;

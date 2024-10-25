@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -156,5 +157,19 @@ public class RentalController {
             } catch (IllegalStateException e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 이미 반납된 경우
             }
+        }
+
+
+        @GetMapping("/guardian/{guardianCode}")
+        public ResponseEntity<Rental> getRentalsByGuardianCode(@PathVariable String guardianCode) {
+            Rental childRental = rentalService.findByRentalCode(guardianCode);
+            return ResponseEntity.ok(childRental);
+        }
+
+        @GetMapping("/guardian/{guardianCode}/user")
+        public ResponseEntity<User> getUserByGuardianCode(@PathVariable String guardianCode) {
+            Rental childRental = rentalService.findByRentalCode(guardianCode);
+            User childUser= childRental.getUser();
+            return ResponseEntity.ok(childUser);
         }
 }

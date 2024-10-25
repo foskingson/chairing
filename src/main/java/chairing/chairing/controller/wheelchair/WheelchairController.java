@@ -3,14 +3,21 @@ package chairing.chairing.controller.wheelchair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import chairing.chairing.config.JwtUtil;
+import chairing.chairing.domain.rental.Rental;
+import chairing.chairing.domain.user.User;
 import chairing.chairing.domain.wheelchair.Location;
 import chairing.chairing.domain.wheelchair.Wheelchair;
+import chairing.chairing.repository.user.UserRepository;
 import chairing.chairing.repository.wheelchair.WheelchairRepository;
+import chairing.chairing.service.rental.RentalService;
+import chairing.chairing.service.user.UserService;
 import chairing.chairing.service.wheelchair.WheelchairService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WheelchairController {
 
     private final WheelchairService wheelchairService;
-    private final WheelchairRepository wheelchairRepository;
+    private final UserService userService;
+    private final RentalService rentalService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping("/adult")
     public ResponseEntity<Long> getAvailableAdultWheelchairCount() {
@@ -38,9 +47,15 @@ public class WheelchairController {
 
     // 휠체어 위치 정보 제공
     @GetMapping("/map")
-    public ResponseEntity<?> showMap() {
-        Wheelchair wheelchair = wheelchairRepository.findById(1L)
-            .orElseThrow(() -> new IllegalArgumentException("Wheelchair not found"));
+    public ResponseEntity<?> showMap(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7); // "Bearer " 제거
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        System.out.println(userId);
+        User user = userService.getCurrentUser(userId);
+
+        Rental rental = rentalService.findByRentalCode(user.getGuardianCode());
+        Wheelchair wheelchair = rental.getWheelchair();
+        System.out.println(wheelchair.getLocation().getX());
         
         return ResponseEntity.ok(wheelchair.getLocation());
     }

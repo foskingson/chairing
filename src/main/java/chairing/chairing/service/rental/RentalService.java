@@ -123,6 +123,8 @@ public class RentalService {
         rental.changeStatus(RentalStatus.RETURNED);
         return rentalRepository.save(rental);
     }
-    
-    
+
+    public Rental findByRentalCode(String guardianCode) {
+        return rentalRepository.findByRentalCode(guardianCode).orElseThrow(() -> new IllegalArgumentException("대여 기록을 찾을 수 없습니다."));
+    }
 }

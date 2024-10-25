@@ -16,6 +16,7 @@ import chairing.chairing.domain.wheelchair.WheelchairType;
 public interface WheelchairRepository extends JpaRepository<Wheelchair, Long> {
     Optional<Wheelchair> findFirstByTypeAndStatus(WheelchairType type, WheelchairStatus status);
     
+    
      // 휠체어의 수를 가져오는 메서드
     @Query("SELECT COUNT(w) FROM Wheelchair w WHERE w.type = :type AND w.status = :status")
     long countByTypeAndStatus(@Param("type") WheelchairType type, @Param("status") WheelchairStatus status);
