@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
                     XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))  // H2 콘솔 사용을 위한 헤더 설정
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/user/**").permitAll()  // 로그인 경로는 모두 허용
+                .requestMatchers("/**").permitAll()  // 로그인 경로는 모두 허용
                 .requestMatchers("/h2-console/**").permitAll()  
                 .anyRequest().authenticated()  // 그 외 요청은 인증 필요
             )

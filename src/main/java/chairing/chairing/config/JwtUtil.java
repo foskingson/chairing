@@ -4,13 +4,23 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+
 import javax.crypto.SecretKey;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import java.util.Date;
 
+import chairing.chairing.domain.user.User;
+import chairing.chairing.repository.user.UserRepository;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @Component
 public class JwtUtil {
 
@@ -18,6 +28,8 @@ public class JwtUtil {
     private String secret;
     
     private SecretKey key;
+
+    private final UserRepository userRepository;
 
     // SecretKey를 한 번만 생성하는 방식으로 수정
     @PostConstruct
@@ -27,7 +39,15 @@ public class JwtUtil {
 
     // 토큰 생성 메서드
     public String generateToken(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getUserId());
+        claims.put("username", user.getUsername());
+        claims.put("role", user.getRole());
+        claims.put("phoneNumber", user.getPhoneNumber());
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
@@ -35,6 +55,11 @@ public class JwtUtil {
                 .compact();
     }
 
+    public Long getUserIdFromToken(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("userId", Long.class); // userId를 반환
+    }
+    
     // 토큰 검증 메서드
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = extractUsername(token);
@@ -64,4 +89,27 @@ public class JwtUtil {
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
+
+    public User getUserFromToken(String token) {
+
+        // Claims 객체에서 JWT 정보를 파싱
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key) // 서명 검증을 위한 비밀 키 설정
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        
+        // Claims에서 필요한 정보 추출
+        Long userId = claims.get("userId", Long.class);
+        String username = claims.getSubject();
+        
+        // 사용자 객체 생성 후 반환
+        User user = new User();
+        user.setUserId(userId);
+        user.setUsername(username);
+        // 필요한 다른 필드도 설정
+        
+        return user;
+    }
+
 }

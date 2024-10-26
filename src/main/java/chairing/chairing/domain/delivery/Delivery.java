@@ -13,11 +13,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Delivery {
 
     @Id
@@ -37,7 +39,4 @@ public class Delivery {
 
     @Column(nullable = false)
     private String deliveryAddress;         //배송지 주소
-
-    public Delivery() {
-    }
 }

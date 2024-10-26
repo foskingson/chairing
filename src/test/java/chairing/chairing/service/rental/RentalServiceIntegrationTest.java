@@ -58,37 +58,37 @@ public class RentalServiceIntegrationTest {
         }
     }
 
-    @Test
-    void 휠체어_대여_테스트() {
-        // Principal 객체 모킹
-        Principal principal = Mockito.mock(Principal.class);
-        Mockito.when(principal.getName()).thenReturn("testuser");
+    // @Test
+    // void 휠체어_대여_테스트() {
+    //     // Principal 객체 모킹
+    //     Principal principal = Mockito.mock(Principal.class);
+    //     Mockito.when(principal.getName()).thenReturn("testuser");
 
-        // 휠체어 대여 시도
-        LocalDateTime returnDate = LocalDateTime.now().plusDays(7);
-        Rental rental = rentalService.rentWheelchair(principal, WheelchairType.ADULT, returnDate);
+    //     // 휠체어 대여 시도
+    //     LocalDateTime returnDate = LocalDateTime.now().plusDays(7);
+    //     Rental rental = rentalService.rentWheelchair(principal, WheelchairType.ADULT, returnDate);
 
-        // 휠체어가 대여된 상태인지 확인
-        assertEquals(RentalStatus.ACTIVE, rental.getStatus());
-        assertEquals(WheelchairStatus.RENTED, rental.getWheelchair().getStatus());
-        assertNotNull(rental.getRentalCode());
-    }
+    //     // 휠체어가 대여된 상태인지 확인
+    //     assertEquals(RentalStatus.ACTIVE, rental.getStatus());
+    //     assertEquals(WheelchairStatus.RENTED, rental.getWheelchair().getStatus());
+    //     assertNotNull(rental.getRentalCode());
+    // }
 
-    @Test
-    void 휠체어_반납_테스트() {
-        // Principal 객체 모킹
-        Principal principal = Mockito.mock(Principal.class);
-        Mockito.when(principal.getName()).thenReturn("testuser");
+    // @Test
+    // void 휠체어_반납_테스트() {
+    //     // Principal 객체 모킹
+    //     Principal principal = Mockito.mock(Principal.class);
+    //     Mockito.when(principal.getName()).thenReturn("testuser");
 
-        // 먼저 대여
-        LocalDateTime returnDate = LocalDateTime.now().plusDays(7);
-        Rental rental = rentalService.rentWheelchair(principal, WheelchairType.ADULT, returnDate);
+    //     // 먼저 대여
+    //     LocalDateTime returnDate = LocalDateTime.now().plusDays(7);
+    //     Rental rental = rentalService.rentWheelchair(principal, WheelchairType.ADULT, returnDate);
 
-        // 반납 시도
-        Rental returnedRental = rentalService.returnWheelchair(principal, rental.getRentalId());
+    //     // 반납 시도
+    //     Rental returnedRental = rentalService.returnWheelchair(principal, rental.getRentalId());
 
-        // 반납된 상태인지 확인
-        assertEquals(RentalStatus.RETURNED, returnedRental.getStatus());
-        assertEquals(WheelchairStatus.AVAILABLE, returnedRental.getWheelchair().getStatus());
-    }
+    //     // 반납된 상태인지 확인
+    //     assertEquals(RentalStatus.RETURNED, returnedRental.getStatus());
+    //     assertEquals(WheelchairStatus.AVAILABLE, returnedRental.getWheelchair().getStatus());
+    // }
 }

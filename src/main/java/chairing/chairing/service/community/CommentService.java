@@ -3,6 +3,7 @@ package chairing.chairing.service.community;
 import lombok.RequiredArgsConstructor;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +40,11 @@ public class CommentService {
     @Transactional
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
+    }
+
+    @Transactional
+    public List<Comment> getCommentsByPostId(Long postId) {
+        // postId로 댓글 목록을 조회하는 로직
+        return commentRepository.findByPostIdWithUser(postId);
     }
 }
