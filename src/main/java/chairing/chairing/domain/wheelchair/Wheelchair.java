@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
@@ -29,6 +30,7 @@ public class Wheelchair {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wheelchairId;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private WheelchairStatus status;
 

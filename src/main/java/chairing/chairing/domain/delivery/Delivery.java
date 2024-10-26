@@ -1,22 +1,11 @@
 package chairing.chairing.domain.delivery;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import chairing.chairing.domain.rental.Rental;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import jakarta.persistence.*;
 
 @Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,17 +15,23 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryId;
 
+    @Getter
+    @Setter
     @OneToOne
     @JoinColumn(name = "rental_id", nullable = false)
-    private Rental rental;      //배송과 연결
+    private Rental rental;      // 배송과 연결
 
     @Column(nullable = false)
-    private String trackingNumber;  //택배사 운송장 번호
+    private String trackingNumber;  // 택배사 운송장 번호
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DeliveryStatus deliveryStatus;  //배송상태
+    private DeliveryStatus status;  // 배송 상태를 Enum으로 관리
 
     @Column(nullable = false)
-    private String deliveryAddress;         //배송지 주소
+    private String deliveryAddress;  // 배송지 주소
+
+    @Column(nullable = false)
+    private String name;  // 수령인 이름 또는 배송 대상 이름
+
 }

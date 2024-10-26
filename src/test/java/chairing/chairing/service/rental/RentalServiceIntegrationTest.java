@@ -7,6 +7,7 @@ import chairing.chairing.domain.wheelchair.Location;
 import chairing.chairing.domain.wheelchair.Wheelchair;
 import chairing.chairing.domain.wheelchair.WheelchairStatus;
 import chairing.chairing.domain.wheelchair.WheelchairType;
+import chairing.chairing.repository.delivery.DeliveryRepository;
 import chairing.chairing.repository.rental.RentalRepository;
 import chairing.chairing.repository.user.UserRepository;
 import chairing.chairing.repository.wheelchair.WheelchairRepository;
@@ -37,6 +38,8 @@ public class RentalServiceIntegrationTest {
     private WheelchairRepository wheelchairRepository;
 
     private RentalService rentalService;
+    @Autowired
+    private DeliveryRepository deliveryRepository;
 
 
     @BeforeEach
@@ -44,7 +47,7 @@ public class RentalServiceIntegrationTest {
         userRepository.save(new User("testuser", "123", "123", UserRole.NORMAL, null));
 
         // 서비스 객체에 실제 리포지토리 주입
-        rentalService = new RentalService(rentalRepository, wheelchairRepository, userRepository);
+        rentalService = new RentalService(rentalRepository, wheelchairRepository, userRepository, deliveryRepository);
 
         // 유아용 및 성인용 휠체어 각각 100개씩 생성하여 저장
         for (int i = 0; i < 100; i++) {

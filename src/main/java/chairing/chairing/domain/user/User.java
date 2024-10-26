@@ -2,9 +2,9 @@ package chairing.chairing.domain.user;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import chairing.chairing.domain.rental.Rental;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +19,8 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter // 테스트 용도
+@Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId") // Identity-based reference handling
 @Table(name = "users")
 public class User {
     @Id
@@ -27,8 +28,7 @@ public class User {
     private Long userId;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private List<Rental> rentals;
+    private List<Rental> rentals;  // No @JsonManagedReference needed
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -42,13 +42,13 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    private String address;
 
-    private String guardianCode = "0"; // 디폴트 설정 
+    private String guardianCode = "0"; // Default setting
 
     public User() {
-        // 기본 생성자
+        // Default constructor
     }
-    
 
     public User(String username, String password, String phoneNumber, UserRole role, String guardianCode) {
         this.username = username;

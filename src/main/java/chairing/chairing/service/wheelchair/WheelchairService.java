@@ -1,6 +1,7 @@
 package chairing.chairing.service.wheelchair;
 
 import chairing.chairing.domain.wheelchair.Wheelchair;
+import chairing.chairing.domain.wheelchair.WheelchairStatus;
 import chairing.chairing.repository.wheelchair.WheelchairRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,24 @@ public class WheelchairService {
     @Autowired
     private WheelchairRepository wheelchairRepository;
 
+    //상태에 따른 휠체어 목록 반환
+    public List<Wheelchair> findByStatus(WheelchairStatus status) {
+        return wheelchairRepository.findByStatus(status);
+    }
+    // 전체 휠체어 목록 반환
     public List<Wheelchair> getAllWheelchairs() {
         return wheelchairRepository.findAll();
+    }
+    @Autowired
+    public WheelchairService(WheelchairRepository wheelchairRepository) {
+        this.wheelchairRepository = wheelchairRepository;
+    }
+
+    public int countAll() {
+        return (int) wheelchairRepository.count();
+    }
+
+    public int countByStatus(WheelchairStatus status) {
+        return wheelchairRepository.countByStatus(status);
     }
 }

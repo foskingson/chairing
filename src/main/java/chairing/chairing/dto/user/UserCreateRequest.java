@@ -23,7 +23,6 @@ public class UserCreateRequest {
     @NotEmpty(message = "비밀번호는 필수항목입니다.")
     private String password;
 
-
     @NotEmpty(message = "전화번호는 필수항목입니다.")
     private String phoneNumber;
 

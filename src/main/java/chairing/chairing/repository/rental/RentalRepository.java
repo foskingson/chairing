@@ -1,5 +1,6 @@
 package chairing.chairing.repository.rental;
 
+import chairing.chairing.domain.rental.RentalStatus;
 import org.springframework.stereotype.Repository;
 
 import chairing.chairing.domain.rental.Rental;
@@ -22,4 +23,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     // 현재 대여 중인 기록을 가져오는 메서드
     List<Rental> findByUser(User user);
+
+    List<Rental> findByStatus(RentalStatus status); // RentalStatus를 기준으로 조회하는 메서드 추가
 }

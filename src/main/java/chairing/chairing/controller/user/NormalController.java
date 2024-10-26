@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import chairing.chairing.config.JwtUtil;
 import chairing.chairing.domain.rental.Rental;
 import chairing.chairing.domain.wheelchair.WheelchairType;
-import chairing.chairing.dto.rent.RentalRequest;
+import chairing.chairing.dto.rental.RentalRequest;
 import chairing.chairing.service.rental.RentalService;
 import lombok.RequiredArgsConstructor;
 
