@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import chairing.chairing.config.JwtUtil;
+import chairing.chairing.domain.rental.Rental;
 import chairing.chairing.domain.user.User;
+import chairing.chairing.dto.guardian.GuardianProfileResponse;
 import chairing.chairing.dto.user.LoginRequest;
 import chairing.chairing.dto.user.UserCreateRequest;
+import chairing.chairing.service.rental.RentalService;
 import chairing.chairing.service.user.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -21,11 +24,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 
-import java.security.Principal;
+
 import java.util.Collections;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +39,7 @@ import org.springframework.http.HttpStatus;
 public class UserController {
 
     private final UserService userService;
+    private final RentalService rentalService;
     private final JwtUtil jwtUtil;
 
     // 회원가입 처리
@@ -99,6 +102,29 @@ public class UserController {
         User user = userService.getCurrentUser(userId); // User 정보와 대여 정보 조회
         return user; // 현재 사용자 정보 반환
     }
+
+    @GetMapping("/guardian/current")
+    public ResponseEntity<GuardianProfileResponse> getGuardianCurrentUser(@RequestHeader("Authorization") String token) {
+        // Bearer 토큰에서 JWT 부분만 분리
+        String jwt = token.substring(7); // "Bearer " 이후 부분 추출
+        Long userId = jwtUtil.getUserIdFromToken(jwt); // JWT에서 사용자 ID 추출
+        User user = userService.getCurrentUser(userId); // User 정보와 대여 정보 조회
+
+        Rental childRental = rentalService.findByRentalCode(user.getGuardianCode());
+        User childUser= childRental.getUser();
+
+        GuardianProfileResponse response = new GuardianProfileResponse(
+            user.getUsername(),
+            user.getPhoneNumber(),
+            childUser.getUsername(),
+            childUser.getPhoneNumber(),
+            childRental.getRentalDate(),
+            childRental.getReturnDate()
+        );
+        
+        return ResponseEntity.ok(response); // 현재 사용자 정보 반환
+    }
+
 
 
     @GetMapping("/authStatus")

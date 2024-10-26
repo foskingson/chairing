@@ -1,5 +1,6 @@
 package chairing.chairing.service.rental;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class RentalService {
 
     //대여
     @Transactional
-    public Rental rentWheelchair(String username, WheelchairType wheelchairType, LocalDateTime returnDate) {
+    public Rental rentWheelchair(String username, WheelchairType wheelchairType, LocalDate rentalDate, LocalDate returnDate) {
         // 로그인한 유저 정보 가져오기
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
@@ -58,16 +59,26 @@ public class RentalService {
                 .orElseThrow(() -> new IllegalArgumentException("대여 가능한 휠체어가 없습니다."));
 
         // 대여 정보 생성 및 저장
+<<<<<<< HEAD
         Rental rental = new Rental(user, wheelchair, LocalDateTime.now(), returnDate, generateRentalCode(), RentalStatus.WAITING);
 
+=======
+        Rental rental = new Rental(user, wheelchair, rentalDate, returnDate, generateRentalCode(), RentalStatus.WAITING); // rentalDate로 수정
+    
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
         // 휠체어 상태 변경
         wheelchair.changeStatus(WheelchairStatus.WAITING);
         wheelchairRepository.save(wheelchair);
 
         return rentalRepository.save(rental);
     }
+<<<<<<< HEAD
 
     //반납
+=======
+    
+    
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
     @Transactional
     public Rental returnWheelchair(String username) {
         // 로그인한 유저 정보 가져오기
@@ -93,6 +104,7 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
+<<<<<<< HEAD
     //요청 승인
     public Rental approveRental(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId)
@@ -150,20 +162,45 @@ public class RentalService {
     }
 
     //대여 취소
+=======
+    @Transactional
+    public Optional<Rental> findCurrentRentalByUser(User user) {
+        return rentalRepository.findCurrentRentalByUser(user);
+    }
+
+    @Transactional
+    public Optional<Rental> findCurrentRentalByUserV2(User user) {
+        return rentalRepository.findCurrentRentalByUserV2(user);
+    }
+
+    @Transactional
+    public void updateRental(Rental rental) {
+        rentalRepository.save(rental);
+    }
+
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
     @Transactional
     public Rental cancelWheelchair(String username) {
         // 로그인한 유저 정보 가져오기
         User user = userRepository.findByUsername(username)
+<<<<<<< HEAD
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
         // 해당 사용자의 현재 대여 정보 가져오기
         Rental rental = rentalRepository.findCurrentRentalByUser(user)
+=======
+        .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+        
+        // 해당 사용자의 현재 대여 정보 가져오기
+        Rental rental = rentalRepository.findCurrentRentalByUserV2(user)
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
                 .orElseThrow(() -> new IllegalArgumentException("대여 기록을 찾을 수 없습니다."));
 
         // 대여된 휠체어 상태를 "AVAILABLE"로 변경
         Wheelchair wheelchair = rental.getWheelchair();
         wheelchair.changeStatus(WheelchairStatus.AVAILABLE);
         wheelchairRepository.save(wheelchair);
+<<<<<<< HEAD
 
         // 대여 상태를 "RETURNED"로 변경
         rental.changeStatus(RentalStatus.RETURNED);
@@ -174,5 +211,13 @@ public class RentalService {
     @Transactional(readOnly = true)
     public List<Rental> getRentalsByStatus(RentalStatus status) {
         return rentalRepository.findByStatus(status); // 상태를 기준으로 대여 목록을 조회
+=======
+        rentalRepository.delete(rental);
+        return rental;
+    }
+
+    public Rental findByRentalCode(String guardianCode) {
+        return rentalRepository.findByRentalCode(guardianCode).orElseThrow(() -> new IllegalArgumentException("대여 기록을 찾을 수 없습니다."));
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
     }
 }

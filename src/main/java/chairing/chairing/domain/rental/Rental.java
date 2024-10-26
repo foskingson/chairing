@@ -1,5 +1,6 @@
 package chairing.chairing.domain.rental;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import chairing.chairing.domain.user.User;
@@ -38,9 +39,9 @@ public class Rental {
     private Wheelchair wheelchair;  // You can also handle this with @JsonIdentityInfo
 
     @Column(nullable = false)
-    private LocalDateTime rentalDate;
+    private LocalDate rentalDate;
 
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 
     @Column(nullable = false)
     private String rentalCode; // Arbitrary code
@@ -54,8 +55,13 @@ public class Rental {
         status = newStatus;
     }
 
+<<<<<<< HEAD
     public Rental(User user, Wheelchair wheelchair, LocalDateTime rentalDate, LocalDateTime returnDate,
                   String rentalCode, RentalStatus status) {
+=======
+    public Rental(User user, Wheelchair wheelchair, LocalDate rentalDate, LocalDate returnDate,
+            String rentalCode, RentalStatus status) {
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
         this.user = user;
         this.wheelchair = wheelchair;
         this.rentalDate = rentalDate;

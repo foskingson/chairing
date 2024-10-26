@@ -57,4 +57,8 @@ public class Wheelchair {
     public void changeStatus(WheelchairStatus newStatus){
         status=newStatus;
     }
+
+    public void updateLocation(Location location){
+        this.location = location;
+    }
 }

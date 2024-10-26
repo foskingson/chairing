@@ -8,15 +8,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import chairing.chairing.config.JwtUtil;
 import chairing.chairing.domain.community.Comment;
 import chairing.chairing.domain.community.Post;
+import chairing.chairing.domain.user.User;
 import chairing.chairing.dto.community.CommentRequest;
 import chairing.chairing.dto.community.PostRequest;
 import chairing.chairing.service.community.CommentService;
 import chairing.chairing.service.community.PostService;
+import chairing.chairing.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 
 import java.security.Principal;
@@ -29,6 +33,8 @@ public class CommunityController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final JwtUtil jwtUtil;
+    private final UserService userService;
 
     // 게시물 목록 반환 (JSON)
     @GetMapping
@@ -46,9 +52,13 @@ public class CommunityController {
 
     // 게시물 생성 (POST)
     @PostMapping("/createPost")
-    public ResponseEntity<?> createPost(@ModelAttribute PostRequest postRequest, Principal principal) {
+    public ResponseEntity<?> createPost(@ModelAttribute PostRequest postRequest, @RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7); // "Bearer " 제거
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        System.out.println(userId);
+        User user = userService.getCurrentUser(userId);
         try {
-            postService.createPost(principal, postRequest);
+            postService.createPost(user, postRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");
         } catch (Exception e) {
             // 에러 메시지 로그
@@ -74,6 +84,7 @@ public class CommunityController {
     // 게시물 삭제
     @DeleteMapping("/post/{id}/delete")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
+        postService.deleteImg(id);
         postService.deletePost(id);
         return ResponseEntity.ok("Post deleted successfully");
     }

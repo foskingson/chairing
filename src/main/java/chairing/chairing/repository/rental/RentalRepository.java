@@ -21,8 +21,17 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT r FROM Rental r WHERE r.user = ?1 AND r.status = chairing.chairing.domain.rental.RentalStatus.ACTIVE")
     Optional<Rental> findCurrentRentalByUser(User user);
 
+    @Query("SELECT r FROM Rental r WHERE r.user = ?1 AND (r.status = chairing.chairing.domain.rental.RentalStatus.ACTIVE OR r.status = chairing.chairing.domain.rental.RentalStatus.WAITING)")
+    Optional<Rental> findCurrentRentalByUserV2(User user);
+
     // 현재 대여 중인 기록을 가져오는 메서드
     List<Rental> findByUser(User user);
 
+<<<<<<< HEAD
     List<Rental> findByStatus(RentalStatus status); // RentalStatus를 기준으로 조회하는 메서드 추가
+=======
+    int countByRentalCode(String guardianCode);
+
+    Optional<Rental> findByRentalCode(String guardianCode);
+>>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
 }
