@@ -118,10 +118,8 @@ public class RentalService {
         Wheelchair wheelchair = rental.getWheelchair();
         wheelchair.changeStatus(WheelchairStatus.AVAILABLE);
         wheelchairRepository.save(wheelchair);
-
-        // 대여 상태를 "RETURNED"로 변경
-        rental.changeStatus(RentalStatus.RETURNED);
-        return rentalRepository.save(rental);
+        rentalRepository.delete(rental);
+        return rental;
     }
 
     public Rental findByRentalCode(String guardianCode) {
