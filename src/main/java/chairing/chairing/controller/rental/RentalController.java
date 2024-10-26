@@ -134,4 +134,23 @@ public class RentalController {
         User childUser = childRental.getUser();
         return ResponseEntity.ok(childUser);
     }
+
+    // 대기 중인 대여 목록 조회 메서드
+    @GetMapping("/list")
+    public ResponseEntity<List<Rental>> getWaitingRentals() {
+        List<Rental> rentals = rentalService.getRentalsByStatus(RentalStatus.WAITING);
+        return ResponseEntity.ok(rentals);
+    }
+
+    @GetMapping("/api/wheelchairs")
+    public ResponseEntity<List<Wheelchair>> getWheelchairsByStatus(@RequestParam("status") String status) {
+        List<Wheelchair> wheelchairs;
+        if (status.equalsIgnoreCase("ALL")) {
+            wheelchairs = wheelchairService.getAllWheelchairs(); // 전체 목록
+        } else {
+            WheelchairStatus wheelchairStatus = WheelchairStatus.valueOf(status.toUpperCase());
+            wheelchairs = wheelchairService.findByStatus(wheelchairStatus); // 상태별 목록
+        }
+        return ResponseEntity.ok(wheelchairs);
+    }
 }

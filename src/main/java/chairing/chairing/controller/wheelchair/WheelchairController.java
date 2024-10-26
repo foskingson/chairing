@@ -68,6 +68,7 @@ public class WheelchairController {
 
         return counts;
     }
+
     @GetMapping("/child")
     public ResponseEntity<Long> getAvailableChildWheelchairCount() {
         long count = wheelchairService.getAvailableChildWheelchairCount();

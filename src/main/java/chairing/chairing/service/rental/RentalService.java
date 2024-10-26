@@ -187,4 +187,9 @@ public class RentalService {
     public Rental findByRentalCode(String guardianCode) {
         return rentalRepository.findByRentalCode(guardianCode).orElseThrow(() -> new IllegalArgumentException("대여 기록을 찾을 수 없습니다."));
     }
+
+    @Transactional(readOnly = true)
+    public List<Rental> getRentalsByStatus(RentalStatus status) {
+        return rentalRepository.findByStatus(status); // 상태를 기준으로 대여 목록을 조회
+    }
 }
