@@ -27,11 +27,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     // 현재 대여 중인 기록을 가져오는 메서드
     List<Rental> findByUser(User user);
 
-<<<<<<< HEAD
     List<Rental> findByStatus(RentalStatus status); // RentalStatus를 기준으로 조회하는 메서드 추가
-=======
     int countByRentalCode(String guardianCode);
 
     Optional<Rental> findByRentalCode(String guardianCode);
->>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
 }

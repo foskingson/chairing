@@ -20,14 +20,11 @@ public interface WheelchairRepository extends JpaRepository<Wheelchair, Long> {
     int countByStatus(WheelchairStatus status);
 
     Optional<Wheelchair> findFirstByTypeAndStatus(WheelchairType type, WheelchairStatus status);
-<<<<<<< HEAD
 
     List<Wheelchair> findByStatus(WheelchairStatus status);
-=======
     
     
      // 휠체어의 수를 가져오는 메서드
     @Query("SELECT COUNT(w) FROM Wheelchair w WHERE w.type = :type AND w.status = :status")
     long countByTypeAndStatus(@Param("type") WheelchairType type, @Param("status") WheelchairStatus status);
->>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
 }

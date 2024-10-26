@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "rentalId") // Identity-based reference handling
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "rentalId") 
 public class Rental {
 
     @Id
@@ -32,11 +32,11 @@ public class Rental {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // No @JsonBackReference needed
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "wheelchair_id")
-    private Wheelchair wheelchair;  // You can also handle this with @JsonIdentityInfo
+    private Wheelchair wheelchair; 
 
     @Column(nullable = false)
     private LocalDate rentalDate;
@@ -44,7 +44,7 @@ public class Rental {
     private LocalDate returnDate;
 
     @Column(nullable = false)
-    private String rentalCode; // Arbitrary code
+    private String rentalCode; 
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -55,13 +55,8 @@ public class Rental {
         status = newStatus;
     }
 
-<<<<<<< HEAD
-    public Rental(User user, Wheelchair wheelchair, LocalDateTime rentalDate, LocalDateTime returnDate,
-                  String rentalCode, RentalStatus status) {
-=======
     public Rental(User user, Wheelchair wheelchair, LocalDate rentalDate, LocalDate returnDate,
             String rentalCode, RentalStatus status) {
->>>>>>> 53cce2cea0a5fb93212811c19d8c353bd1f4a7c6
         this.user = user;
         this.wheelchair = wheelchair;
         this.rentalDate = rentalDate;
