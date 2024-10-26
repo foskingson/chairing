@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="chairing.chairing.service.user.NormalServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-09-25T06:48:59" hostname="DESKTOP-LICRKDR" time="0.19">
+  <properties/>
+  <testcase name="testCreateUser()" classname="chairing.chairing.service.user.NormalServiceTest" time="0.19"/>
+  <system-out><![CDATA[2024-09-25T15:48:59.431+09:00  INFO 20888 --- [chairing] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [chairing.chairing.service.user.NormalServiceTest]: NormalServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-09-25T15:48:59.470+09:00  INFO 20888 --- [chairing] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration chairing.chairing.ChairingApplication for test class chairing.chairing.service.user.NormalServiceTest
+Hibernate: insert into users (guardian_code,password,phone_number,role,username,user_id) values (?,?,?,?,?,default)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

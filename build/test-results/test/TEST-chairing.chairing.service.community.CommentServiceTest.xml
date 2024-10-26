@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="chairing.chairing.service.community.CommentServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-09-25T06:48:59" hostname="DESKTOP-LICRKDR" time="0.411">
+  <properties/>
+  <testcase name="createComment()" classname="chairing.chairing.service.community.CommentServiceTest" time="0.406"/>
+  <testcase name="deleteComment()" classname="chairing.chairing.service.community.CommentServiceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
