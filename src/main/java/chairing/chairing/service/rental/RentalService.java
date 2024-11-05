@@ -95,59 +95,38 @@ public class RentalService {
     }
 
     //요청 승인
-    public Rental approveRental(Long rentalId) {
+    @Transactional
+    public void approveRental(Long rentalId) {
+        // 요청에 해당하는 대여 정보를 가져옴
         Rental rental = rentalRepository.findById(rentalId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid rental ID"));
 
-        // 대여 상태를 ACTIVE로 변경
+        // rental 상태 업데이트
         rental.setStatus(RentalStatus.ACTIVE);
         rentalRepository.save(rental);
 
-        // 휠체어 상태를 RENTED로 변경
+        // 휠체어 상태를 "RENTED"로 변경
         Wheelchair wheelchair = rental.getWheelchair();
-        wheelchair.changeStatus(WheelchairStatus.RENTED);
-        wheelchairRepository.save(wheelchair);  // 휠체어 상태 변경을 저장
-
-        // 로그 추가
-        System.out.println("Rental found: " + rental.getRentalId());
-
-        // 기존에 동일한 rental로 등록된 delivery가 있는지 확인
-        Optional<Delivery> existingDelivery = deliveryRepository.findByRental(rental);
-        if (existingDelivery.isPresent()) {
-            throw new IllegalStateException("A delivery for this rental already exists.");
-        }
-
-        // 새로운 Delivery 생성 및 설정
-        Delivery delivery = new Delivery();
-        delivery.setRental(rental); // 반드시 rental을 올바르게 설정
-        System.out.println("Setting rental for delivery: " + rental.getRentalId());
-
-        delivery.setTrackingNumber("12345");
-        delivery.setDeliveryAddress(rental.getUser().getAddress());
-        delivery.setName(rental.getUser().getUsername());
-        delivery.setStatus(DeliveryStatus.PENDING);
-
-        // Delivery 저장
-        deliveryRepository.save(delivery);
-
-        return rental;
+        wheelchair.setStatus(WheelchairStatus.RENTED);
+        wheelchairRepository.save(wheelchair);
     }
-    
+
+
     //요청 거절
     @Transactional
-    public Rental rejectRental(Long rentalId) {
-        // rentalId를 사용하여 대여 요청을 조회
+    public void rejectRental(Long rentalId) {
+        // 요청에 해당하는 대여 정보를 가져옴
         Rental rental = rentalRepository.findById(rentalId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid rental ID"));
 
-        // 대여 요청의 상태를 REJECTED로 변경
-        rental.setStatus(RentalStatus.REJECTED);
+        // rental 상태를 "RETURNED"로 업데이트
+        rental.setStatus(RentalStatus.RETURNED);
         rentalRepository.save(rental);
 
-        // 로그 추가
-        System.out.println("Rental rejected: " + rental.getRentalId());
-
-        return rental;
+        // 휠체어 상태를 "AVAILABLE"로 변경
+        Wheelchair wheelchair = rental.getWheelchair();
+        wheelchair.setStatus(WheelchairStatus.AVAILABLE);
+        wheelchairRepository.save(wheelchair);
     }
 
     //대여 취소
