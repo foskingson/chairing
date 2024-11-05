@@ -81,16 +81,16 @@ public class RentalController {
 
     // 대여 승인
     @PutMapping("/approve/{rentalId}")
-    public ResponseEntity<String> approveRental(@PathVariable Long rentalId) {
-        rentalService.approveRental(rentalId);
-        return ResponseEntity.ok("Rental approved and updated.");
+    public ResponseEntity<Rental> approveRental(@PathVariable Long rentalId) {
+        Rental rental = rentalService.approveRental(rentalId);
+        return ResponseEntity.ok(rental);
     }
 
     // 대여 거절
     @PutMapping("/reject/{rentalId}")
-    public ResponseEntity<String> rejectRental(@PathVariable Long rentalId) {
-        rentalService.rejectRental(rentalId);
-        return ResponseEntity.ok("Rental rejected and updated.");
+    public ResponseEntity<Rental> rejectRental(@PathVariable Long rentalId) {
+        Rental rental = rentalService.rejectRental(rentalId);
+        return ResponseEntity.ok(rental);
     }
 
     // 휠체어 반납 처리
