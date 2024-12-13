@@ -16,6 +16,7 @@ gradle/
 .idea/
 .gradle/
 build/
+out/
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
