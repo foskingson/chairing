@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ChairingApplication<chairing>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "chairing.chairing.ChairingApplication",
+            "projectName": "chairing",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

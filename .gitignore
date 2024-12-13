@@ -1,0 +1,23 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+*.jar
+*.log
+*.tmp
+src/main/resources/
+src/main/resources/firebase/firebase_service_key.json
+build/libs/chairing-0.0.1-SNAPSHOT.jar
+build.gradle
+gradlew
+gradlew.bat
+settings.gradle
+bin/
+gradle/
+.idea/
+.gradle/
+build/
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
